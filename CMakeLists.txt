@@ -41,13 +41,15 @@ foreach(src ${EXAMPLE_SOURCES})
     set(target ${chapter}_${name})
 
     add_executable(${target} ${src})
-    target_link_libraries(${target} raylib)
-    if(TARGET nature)
+
+    # Only link each library into examples that actually include its header.
+    file(READ ${src} src_contents)
+    if(src_contents MATCHES "#[ \t]*include[ \t]*[<\"]raylib\\.h[>\"]")
+        target_link_libraries(${target} raylib)
+    endif()
+    if(TARGET nature AND src_contents MATCHES "#[ \t]*include[ \t]*[<\"]nature\\.h[>\"]")
         target_link_libraries(${target} nature)
     endif()
-
-    # Only link Box2D into examples that actually include its header.
-    file(READ ${src} src_contents)
     if(src_contents MATCHES "#[ \t]*include[ \t]*[<\"](box2d/)?box2d\\.h[>\"]")
         target_link_libraries(${target} box2d)
     endif()
