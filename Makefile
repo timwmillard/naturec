@@ -1,10 +1,10 @@
 BUILD := build
 
-# Which example `make run` launches. Defaults to the latest chapter/example
-# (highest-numbered). Override on the command line, e.g.
+# Which example `make run` launches. Defaults to the most recently modified
+# source file. Override on the command line, e.g.
 #   make run EX=chap0/example01
 ifeq ($(origin EX), undefined)
-EX := $(shell ls -d chap*/*.c 2>/dev/null | sort -V | tail -1 | sed 's,\.c$$,,')
+EX := $(shell ls -t chap*/*.c 2>/dev/null | head -1 | sed 's,\.c$$,,')
 endif
 
 .PHONY: all build configure run list clean
