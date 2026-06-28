@@ -4,6 +4,8 @@
 // supply setup()/draw() and the noc_* config globals (see noc.h).
 
 #include <math.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
 
 #include "nature.h"
@@ -18,6 +20,10 @@ extern float stb_perlin_noise3_seed(float x, float y, float z, int x_wrap,
                                     int y_wrap, int z_wrap, int seed);
 
 static int noise_seed = 0;
+
+// Owned by the runner; default to p5's 100x100 until createCanvas() changes it.
+int width = 100;
+int height = 100;
 
 float randomf(void) {
    // raylib's GetRandomValue is integer-only; scale a 0..999999 draw down to
@@ -63,17 +69,33 @@ float randomGaussian(float mean, float sd) {
    return mag * cosf(2.0f * PI * u2) * sd + mean; // return the first
 }
 
+// Persistent canvas: p5 keeps what you draw between frames, but raylib
+// double-buffers, so we accumulate into an off-screen render texture.
+RenderTexture2D canvas;
+
+void createCanvas(int w, int h) {
+   width = w;
+   height = h;
+   if (IsWindowReady()) {
+      // A default canvas already exists; resize it (p5 semantics).
+      EndTextureMode(); // close the binding main/prev set
+      SetWindowSize(w, h);
+      UnloadRenderTexture(canvas);
+   } else {
+      InitWindow(w, h, window_title); // first call: open the window
+      SetTargetFPS(60);
+   }
+   canvas = LoadRenderTexture(w, h);
+   BeginTextureMode(canvas);
+}
+
 int main(void) {
    SetRandomSeed((unsigned int)time(NULL));
-   noise_seed = GetRandomValue(0, 255); // randomize Perlin noise per run too
-   InitWindow(width, height, window_title);
-   SetTargetFPS(60);
+   noise_seed = GetRandomValue(0, 255); // raylib RNG works pre-window
 
-   // Persistent canvas: p5 keeps what you draw between frames, but raylib
-   // double-buffers, so we accumulate into an off-screen render texture.
-   RenderTexture2D canvas = LoadRenderTexture(width, height);
-
-   BeginTextureMode(canvas);
+   // p5 always has a canvas, even if the sketch never calls createCanvas().
+   // Open the default one; setup() may call createCanvas() to resize it.
+   createCanvas(100, 100);
    setup();
    EndTextureMode();
 

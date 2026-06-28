@@ -3,14 +3,13 @@
 #include "nature.h"
 #include "raylib.h"
 
-const int width = 640;
-const int height = 240;
 const char *window_title = "Nature of Code - Example 0.2 random histogram";
 
 const int total = 20;
 static int randomCounts[20] = {0};
 
 void setup(void) {
+   createCanvas(640, 240);
    ClearBackground(WHITE);
 
    for (int i = 0; i < total; i++) {

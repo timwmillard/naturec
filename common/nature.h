@@ -16,9 +16,11 @@
 
 // --- Sketch contract: defined by each example -------------------------------
 
-// Window configuration. Read once by the runner before the window is created.
-extern const int width;
-extern const int height;
+// Window configuration. width/height are owned by the runner: they default to
+// 100x100 (like p5) and are updated by createCanvas(). window_title is defined
+// by each example and read when the window opens.
+extern int width;
+extern int height;
 extern const char *window_title;
 
 // Like p5's setup()/draw(). Both run with the persistent canvas bound, so
@@ -44,5 +46,7 @@ float randomGaussian(float mean, float sd);
 // e.g. Noise(t, 0, 0) for 1D or Noise(x, y, 0) for 2D. The runner randomizes
 // the underlying permutation at startup, so the field differs each run.
 float noise(float x, float y, float z);
+
+void createCanvas(int w, int h);
 
 #endif // NOC_H

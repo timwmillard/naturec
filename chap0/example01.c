@@ -3,8 +3,6 @@
 #include "nature.h"
 #include "raylib.h"
 
-const int width = 640;
-const int height = 240;
 const char *window_title = "Nature of Code - Example 0.1 random walker";
 
 typedef struct {
@@ -32,6 +30,7 @@ void walker_step(Walker *walker) {
 }
 
 void setup(void) {
+   createCanvas(640, 240);
    walker.x = width / 2; // new Walker()
    walker.y = height / 2;
    ClearBackground(WHITE);

@@ -1,20 +1,25 @@
 #include "nature.h"
 #include "raylib.h"
 
-const int width = 640;
-const int height = 240;
 const char *window_title = "Nature of Code - Example Perlin Noise";
 
-float x = (float)width / 2;
-float y = (float)height / 2 - 20;
+float x;
+float y;
 
-float xr = (float)width / 2;
-float yr = (float)height / 2 + 20;
+float xr;
+float yr;
 
 float xoff = 0;
 
 void setup(void) {
+   createCanvas(640, 240);
    ClearBackground(GRAY);
+
+   x = (float)width / 2;
+   y = (float)height / 2 - 20;
+
+   xr = (float)width / 2;
+   yr = (float)height / 2 + 20;
 }
 
 void draw(void) {

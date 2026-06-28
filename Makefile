@@ -23,7 +23,7 @@ build: configure
 
 # Build everything, then run the selected example.
 run: build
-	@./$(BUILD)/bin/$(EX)
+	./$(BUILD)/bin/$(EX)
 
 # List every example target CMake knows about.
 list: configure
